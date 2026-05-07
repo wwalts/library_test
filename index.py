@@ -2,31 +2,34 @@ import sys
 import os
 sys.path.insert(0, os.path.dirname(__file__))
 
+from http.server import BaseHTTPRequestHandler
 from library import Library
 
 lib = Library()
-_b1 = lib.catalog.add_book("1984", "George Orwell", "Dystopia", 1949)
-_b2 = lib.catalog.add_book("Dune", "Frank Herbert", "Sci-Fi", 1965)
-_b3 = lib.catalog.add_book("Кобзар", "Тарас Шевченко", "Поезія", 1840)
+lib.catalog.add_book("1984", "George Orwell", "Dystopia", 1949)
+lib.catalog.add_book("Dune", "Frank Herbert", "Sci-Fi", 1965)
+lib.catalog.add_book("Кобзар", "Тарас Шевченко", "Поезія", 1840)
 lib.register_reader("Ivan Franko", "ivan@lib.ua")
 
 
-def handler(request):
-    report = lib.get_status_report()
-    books = lib.catalog.get_all_books()
-    readers = lib.readers.get_all_readers()
+class handler(BaseHTTPRequestHandler):
 
-    books_html = ""
-    for b in books:
-        status = "✅ доступна" if b.is_available else "📤 видана"
-        books_html += f"<tr><td>{b.book_id}</td><td><b>{b.title}</b></td><td>{b.author}</td><td>{b.genre}</td><td>{b.year}</td><td>{status}</td></tr>"
+    def do_GET(self):
+        report = lib.get_status_report()
+        books = lib.catalog.get_all_books()
+        readers = lib.readers.get_all_readers()
 
-    readers_html = ""
-    for r in readers:
-        blocked = "🔴 заблок." if r.is_blocked else "🟢 активний"
-        readers_html += f"<tr><td>{r.reader_id}</td><td><b>{r.name}</b></td><td>{r.email}</td><td>{len(r.rented_book_ids)}</td><td>{blocked}</td></tr>"
+        books_html = ""
+        for b in books:
+            status = "✅ доступна" if b.is_available else "📤 видана"
+            books_html += f"<tr><td>{b.book_id}</td><td><b>{b.title}</b></td><td>{b.author}</td><td>{b.genre}</td><td>{b.year}</td><td>{status}</td></tr>"
 
-    html = f"""<!DOCTYPE html>
+        readers_html = ""
+        for r in readers:
+            blocked = "🔴 заблок." if r.is_blocked else "🟢 активний"
+            readers_html += f"<tr><td>{r.reader_id}</td><td><b>{r.name}</b></td><td>{r.email}</td><td>{len(r.rented_book_ids)}</td><td>{blocked}</td></tr>"
+
+        html = f"""<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
@@ -66,4 +69,7 @@ def handler(request):
 </div>
 </body></html>"""
 
-    return html
+        self.send_response(200)
+        self.send_header("Content-type", "text/html; charset=utf-8")
+        self.end_headers()
+        self.wfile.write(html.encode("utf-8"))
