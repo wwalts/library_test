@@ -2,9 +2,9 @@
 # Головний модуль бібліотеки
 # Клас Library об'єднує Catalog, ReaderRegistry та RentalManager
 
-from catalog import Catalog
-from reader import ReaderRegistry
-from rental import RentalManager
+from api.catalog import Catalog
+from api.reader import ReaderRegistry
+from api.rental import RentalManager
 
 
 class Library:

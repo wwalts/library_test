@@ -6,7 +6,7 @@ import logging
 import pytest
 from datetime import date
 
-from library import Library
+from api.library import Library
 
 # ─── Налаштування логування (відображається в --live-log) ────────────────────
 logging.basicConfig(level=logging.INFO, format="%(message)s")

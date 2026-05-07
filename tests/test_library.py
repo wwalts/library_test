@@ -7,10 +7,10 @@ from unittest.mock import MagicMock, patch
 from datetime import date, timedelta
 
  
-from catalog import Catalog, Book
-from reader import Reader, ReaderRegistry
-from rental import RentalRecord, RentalManager
-from library import Library
+from api.catalog import Catalog, Book
+from api.reader import Reader, ReaderRegistry
+from api.rental import RentalRecord, RentalManager
+from api.library import Library
 
 
 # ═══════════════════════════════════════════════════════
