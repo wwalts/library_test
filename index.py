@@ -4,6 +4,10 @@ index.py — веб-інтерфейс для Бібліотечної сист�
 Відкрий браузер: http://localhost:5000
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(__file__))
+
 from flask import Flask, render_template_string, request, redirect, url_for, flash
 from library import Library
 
