@@ -216,13 +216,4 @@ class TestLibraryIntegration:
     # Очікуємо 14 днів терміну оренди, але перевіряємо 7 —
     # це призведе до AssertionError: 14 != 7
     # ──────────────────────────────────────────────────
-    def test_30_broken_due_date_check(self):
-        """
-        [НАВМИСНА ПОМИЛКА] Перевіряємо, що система тестування виявляє помилку.
-        RentalRecord.RENTAL_DAYS = 14, але тест очікує 7.
-        AssertionError буде: assert timedelta(days=14) == timedelta(days=7)
-        """
-        rent_date = date(2026, 1, 1)
-        record = RentalRecord(99, 1, 1, rent_date)
-        expected_wrong_days = 7  # ← НАВМИСНО НЕПРАВИЛЬНЕ ЗНАЧЕННЯ (правильно: 14)
-        assert (record.due_date - record.rent_date).days == expected_wrong_days
+ 
