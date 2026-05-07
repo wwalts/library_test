@@ -39,7 +39,7 @@ jobs:
       # Крок 5: Запускаємо unit-тести через pytest
       - name: Run unit tests
         run: |
-          python -m pytest tests/test_all.py -v
+          python -m pytest tests/ -v
 
   # Крок деплою — виконується тільки після успішного build-and-test
   # і тільки для гілки main
