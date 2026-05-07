@@ -1,0 +1,56 @@
+# .github/workflows/ci-cd.yml
+# GitHub Actions CI/CD пайплайн для проєкту "Бібліотечна система"
+# Запускається при кожному push та pull_request у гілки main і develop
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Крок 1: Клонуємо репозиторій на Runner
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Крок 2: Встановлюємо Python 3.11
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Крок 3: Встановлюємо залежності
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Крок 4: Запускаємо лінтер flake8
+      - name: Run linter (flake8)
+        run: |
+          flake8 . --count --max-line-length=100 --exclude=.git,__pycache__
+
+      # Крок 5: Запускаємо unit-тести через pytest
+      - name: Run unit tests
+        run: |
+          python -m pytest tests/test_all.py -v
+
+  # Крок деплою — виконується тільки після успішного build-and-test
+  # і тільки для гілки main
+  deploy:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        run: echo "Deploying to Vercel... (автоматично через Vercel GitHub Integration)"
