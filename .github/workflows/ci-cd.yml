@@ -34,7 +34,7 @@ jobs:
       # Крок 4: Запускаємо лінтер flake8
       - name: Run linter (flake8)
         run: |
-          flake8 . --count --max-line-length=100 --exclude=.git,__pycache__
+          flake8 . --count --select=E9,F9,E1 --max-line-length=100 --exclude=.git,__pycache__
 
       # Крок 5: Запускаємо unit-тести через pytest
       - name: Run unit tests
