@@ -1,3 +1,7 @@
+from posthog import Posthog
+posthog = Posthog(project_api_key="phc_kiafjm2VjjcX4XJEHZST6LL4sGXvxYw5TUVeKEVEzkiJ", host="https://eu.i.posthog.com")
+posthog.capture("app_started", distinct_id="system")
+
 from api.library import Library
 
 
